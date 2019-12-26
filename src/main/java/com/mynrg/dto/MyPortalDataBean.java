@@ -5,6 +5,7 @@ import java.util.List;
 
 public class MyPortalDataBean {
 	
+	public int id;
 	public String portalname; 
 	public String country;
 	public String url;
@@ -15,6 +16,12 @@ public class MyPortalDataBean {
 	public String currentUser;
 	
 	
+	public int getId() {
+		return id;
+	}
+	public void setId(int id) {
+		this.id = id;
+	}
 	public String getCurrentUser() {
 		return currentUser;
 	}

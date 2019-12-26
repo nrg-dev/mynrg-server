@@ -27,6 +27,7 @@ import org.springframework.stereotype.Service;
 
 import com.mynrg.dao.NrgDao;
 import com.mynrg.dto.MyPortalDataBean;
+import com.mynrg.model.Portal;
 import com.mynrg.util.Custom;
 import com.mynrg.util.GLGException;
 
@@ -54,6 +55,14 @@ public class NrgBoImpl implements NrgBo{
 		return dao.myPortalReg(myportalDataBean);
 	}
 
-	
+	@Override
+	public List<MyPortalDataBean> myportaltable(List<MyPortalDataBean> myportaltable) {
+		return dao.myportaltable(myportaltable);
+	}
+	@Override
+	public Portal myPortalview(int id) {
+		return dao.myPortalview(id);
+	}
+
 	
 }

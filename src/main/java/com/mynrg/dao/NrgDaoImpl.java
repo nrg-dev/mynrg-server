@@ -49,7 +49,7 @@ public class NrgDaoImpl implements NrgDao {
 		public String myPortalReg(MyPortalDataBean myportalDataBean) {
 			String status = "Fail";
 			try {
-				Query q1 = null;
+			/*	Query q1 = null;
 				q1 = entitymanager
 						.createQuery("from Portal where portalName=? and status=?");
 				q1.setParameter(1, myportalDataBean.getPortalname());
@@ -58,7 +58,7 @@ public class NrgDaoImpl implements NrgDao {
 				if (portalresult.size() > 0) {
 
 					status = "Exsist";
-				} else {
+				} else { */
 					Date createddate = new Date();
 					Portal portal = new Portal();
 					portal.setPortalName(myportalDataBean.getPortalname());
@@ -76,12 +76,52 @@ public class NrgDaoImpl implements NrgDao {
 					entitymanager.persist(portal);
 					entitymanager.flush();
 					entitymanager.clear();
-					status = "Success";
-				}
+					status = "success";
+				//}
 			} catch (Exception e) {
 
 			}
 			return status;
 		}
+	    
+	    @Transactional(value = "transactionManager")
+	    @Override
+		public List<MyPortalDataBean> myportaltable(
+				List<MyPortalDataBean> myportaltable) {
+			List<MyPortalDataBean> list = new ArrayList<MyPortalDataBean>();
+			try {
+				Query q = null;
+				q = entitymanager.createQuery("from Portal");
+				List<Portal> portaltablelist = (List<Portal>) q.getResultList();
+				for(Portal p : portaltablelist) {
+					MyPortalDataBean myportaldataBean = new MyPortalDataBean();
+					myportaldataBean.setPortalname(p.getPortalName());
+					myportaldataBean.setCountry(p.getCountry());
+					myportaldataBean.setUrl(p.getUrl());
+					myportaldataBean.setUsername(p.getUserName());
+					myportaldataBean.setPassword(p.getPassword());
+					myportaldataBean.setId(p.getPortalId());
+					list.add(myportaldataBean);
+
+				}
+
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			return list;
+		}
 			
+	    public Portal myPortalview(int id) {
+	    	Portal portal=null;
+			try {
+				portal = entitymanager.find(Portal.class, id);
+				return portal;
+			} catch (Exception e) {				
+				e.printStackTrace();
+				return portal;
+			}
+			//return portal;
+		
+	    }
+	    
 }

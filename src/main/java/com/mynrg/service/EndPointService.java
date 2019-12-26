@@ -2,6 +2,7 @@ package com.mynrg.service;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 /*import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
@@ -57,6 +58,7 @@ import com.google.gson.Gson;
 import com.mynrg.bo.NrgBo;
 
 import com.mynrg.dto.MyPortalDataBean;
+import com.mynrg.model.Portal;
 
 @RestController
 @SpringBootApplication
@@ -120,13 +122,13 @@ NrgBo nrgBo;
 		public String myPortalReg(@RequestBody MyPortalDataBean myportalDataBean)throws JSONException
 		{
 			System.out.println("--------Inside myPortal Reg------------");
-			logger.debug("portalreg");
+			logger.info("portalreg");
 			String status="Fail"; 
 			 Gson gson = null;			
 			try{
 					
 				status = nrgBo.myPortalReg(myportalDataBean);
-				logger.debug("portal reg status"+status);
+				logger.info("portal reg status------------>"+status);
 				gson = new Gson();
 			}
 			catch(Exception e){
@@ -135,6 +137,47 @@ NrgBo nrgBo;
 			}
 			return gson.toJson(status);
 		}
+		
+		// ---------- Get All portal ----------------
+	
+		@Produces(MediaType.APPLICATION_JSON)
+		@RequestMapping(value="/myPortaltable",method=RequestMethod.GET)
+		public ResponseEntity<?>  myPortaltable()throws JSONException{
+	     
+			List<MyPortalDataBean> myportaltable=new ArrayList<MyPortalDataBean>();
+		      try{
+		      
+		    	  myportaltable= nrgBo.myportaltable(myportaltable);		       
+				  return new ResponseEntity<List<MyPortalDataBean>>(myportaltable, HttpStatus.CREATED);
+
+		      }
+		      catch(Exception e){
+		       e.printStackTrace();
+		      }
+		    return new ResponseEntity<List<MyPortalDataBean>>(myportaltable, HttpStatus.CREATED);
+		     }
+		
+		
+		// ---------- Get single portal ----------------
+		
+			@Produces(MediaType.APPLICATION_JSON)
+			@RequestMapping(value="/myPortalview",method=RequestMethod.GET)
+			public Portal  myPortalview(@RequestParam int id)throws JSONException{
+				System.out.println("inside my portal view");
+				Portal myPortalDataBean=null;//=new Portal();
+			      try{
+			    	  myPortalDataBean = new Portal();
+			    	  myPortalDataBean= nrgBo.myPortalview(id);	
+			    	  System.out.println("portal name-->"+myPortalDataBean.getPortalName());
+			    	  System.out.println("portal name-->"+myPortalDataBean.getPortalId());
+
+			    	  return myPortalDataBean;
+			      }
+			      catch(Exception e){
+			       e.printStackTrace();
+			      }
+			    return myPortalDataBean;
+			     }
 		
 		
 }
