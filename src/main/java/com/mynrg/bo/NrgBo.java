@@ -16,9 +16,11 @@ public interface NrgBo {
 	
 	
 	public static final Logger logger = LoggerFactory.getLogger(NrgBo.class);
-	public String myPortalReg(MyPortalDataBean myportalDataBean);
+	public String myPortalReg(Portal portal);
 	public List<MyPortalDataBean> myportaltable(List<MyPortalDataBean> myportalDataBean);
 	public Portal myPortalview(int id);
+	public String myPortaldelete(int id);
 
+	
 	
 }

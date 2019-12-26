@@ -51,8 +51,8 @@ public class NrgBoImpl implements NrgBo{
 	
 	
 	@Override
-	public String myPortalReg(MyPortalDataBean myportalDataBean) {
-		return dao.myPortalReg(myportalDataBean);
+	public String myPortalReg(Portal portal) {
+		return dao.myPortalReg(portal);
 	}
 
 	@Override
@@ -63,6 +63,12 @@ public class NrgBoImpl implements NrgBo{
 	public Portal myPortalview(int id) {
 		return dao.myPortalview(id);
 	}
+	@Override
+	public String myPortaldelete(int id) {
+		return dao.myPortaldelete(id);
+	}
+
+	
 
 	
 }

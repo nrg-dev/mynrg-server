@@ -23,6 +23,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -114,12 +115,12 @@ NrgBo nrgBo;
 	// http://35.162.40.190:80
 	
 	
-	// ---------------------------------------- Common Method ----------------------------------------
+	// ---------------------------------------- save portal ----------------------------------------
 	
-	
+		
 		@PostMapping("/myPortalReg")
 		//@CrossOrigin(origins = "http://35.162.40.190:80")
-		public String myPortalReg(@RequestBody MyPortalDataBean myportalDataBean)throws JSONException
+		public String myPortalReg(@RequestBody Portal portal)throws JSONException
 		{
 			System.out.println("--------Inside myPortal Reg------------");
 			logger.info("portalreg");
@@ -127,7 +128,7 @@ NrgBo nrgBo;
 			 Gson gson = null;			
 			try{
 					
-				status = nrgBo.myPortalReg(myportalDataBean);
+				status = nrgBo.myPortalReg(portal);
 				logger.info("portal reg status------------>"+status);
 				gson = new Gson();
 			}
@@ -160,24 +161,41 @@ NrgBo nrgBo;
 		
 		// ---------- Get single portal ----------------
 		
-			@Produces(MediaType.APPLICATION_JSON)
-			@RequestMapping(value="/myPortalview",method=RequestMethod.GET)
-			public Portal  myPortalview(@RequestParam int id)throws JSONException{
-				System.out.println("inside my portal view");
-				Portal myPortalDataBean=null;//=new Portal();
-			      try{
-			    	  myPortalDataBean = new Portal();
-			    	  myPortalDataBean= nrgBo.myPortalview(id);	
-			    	  System.out.println("portal name-->"+myPortalDataBean.getPortalName());
-			    	  System.out.println("portal name-->"+myPortalDataBean.getPortalId());
+		@Produces(MediaType.APPLICATION_JSON)
+		@RequestMapping(value="/myPortalview",method=RequestMethod.GET)
+		public Portal  myPortalview(@RequestParam int id)throws JSONException{
+			System.out.println("inside my portal view");
+			Portal myPortalDataBean=null;//=new Portal();
+		      try{
+		    	  myPortalDataBean = new Portal();
+		    	  myPortalDataBean= nrgBo.myPortalview(id);	
+		    	  System.out.println("portal name-->"+myPortalDataBean.getPortalName());
+		    	  System.out.println("portal name-->"+myPortalDataBean.getPortalId());
 
-			    	  return myPortalDataBean;
-			      }
-			      catch(Exception e){
+		    	  return myPortalDataBean;
+		      }
+		      catch(Exception e){
+		       e.printStackTrace();
+		      }
+		    return myPortalDataBean;
+		     }
+	
+	
+		
+		// ----------  remove portal ----------------
+		
+		@Produces(MediaType.APPLICATION_JSON)
+		@DeleteMapping(value="/myPortaldelete")
+		public void  myPortaldelete(@RequestParam int id)throws JSONException{
+			System.out.println("inside my portal delete");
+			String status=null;//=new Portal();
+		      try{
+		    	  status= nrgBo.myPortaldelete(id);	
+		    	  //return status;
+		      }
+		      catch(Exception e){
 			       e.printStackTrace();
-			      }
-			    return myPortalDataBean;
-			     }
-		
-		
+		    	 //return status;
+		      }
+		     }
 }
