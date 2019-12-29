@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.mynrg.dto.MyPortalDataBean;
 import com.mynrg.model.Portal;
+import com.mynrg.model.ProductionIssue;
 import com.mynrg.util.Custom;
 
 //import javax.persistence.EntityManagerFactory;
@@ -44,35 +45,19 @@ public class NrgDaoImpl implements NrgDao {
 	 
 
 	 
-	    @Transactional(value = "transactionManager")
+	    
+	 	/* Portal */
+	 	
+	 	// save
+	 	@Transactional(value = "transactionManager")
 		@Override
-		public String myPortalReg(MyPortalDataBean myportalDataBean) {
+		public String myPortalReg(Portal portal) {
 			String status = "Fail";
 			try {
-			/*	Query q1 = null;
-				q1 = entitymanager
-						.createQuery("from Portal where portalName=? and status=?");
-				q1.setParameter(1, myportalDataBean.getPortalname());
-				q1.setParameter(2, "Active");
-				List<Portal> portalresult = (List<Portal>) q1.getResultList();
-				if (portalresult.size() > 0) {
-
-					status = "Exsist";
-				} else { */
 					Date createddate = new Date();
-					Portal portal = new Portal();
-					portal.setPortalName(myportalDataBean.getPortalname());
-					portal.setCountry(myportalDataBean.getCountry());
-					portal.setUrl(myportalDataBean.getUrl());
-					portal.setEmailId1(myportalDataBean.getEmailID());
-					/* portal.setEmailId2(myportalDataBean.get); */
-					portal.setUserName(myportalDataBean.getUsername());
-					portal.setPassword(myportalDataBean.getPassword());
-					portal.setPhoneNumber1(myportalDataBean.getPhonenumber());
-					/* portal.setPhoneNumber2(myportalDataBean.); */
-					portal.setCreatedDate(createddate);
-					portal.setCreatedPerson(myportalDataBean.currentUser);
 					portal.setStatus("Active");
+					portal.setCreatedDate(createddate);
+					portal.setUpdatedDate(createddate);
 					entitymanager.persist(portal);
 					entitymanager.flush();
 					entitymanager.clear();
@@ -84,33 +69,25 @@ public class NrgDaoImpl implements NrgDao {
 			return status;
 		}
 	    
+	    // load
 	    @Transactional(value = "transactionManager")
 	    @Override
-		public List<MyPortalDataBean> myportaltable(
-				List<MyPortalDataBean> myportaltable) {
-			List<MyPortalDataBean> list = new ArrayList<MyPortalDataBean>();
+		public List<Portal> myportaltable(
+				List<Portal> myportaltable) {
+			//List<MyPortalDataBean> list = new ArrayList<MyPortalDataBean>();
 			try {
 				Query q = null;
 				q = entitymanager.createQuery("from Portal");
-				List<Portal> portaltablelist = (List<Portal>) q.getResultList();
-				for(Portal p : portaltablelist) {
-					MyPortalDataBean myportaldataBean = new MyPortalDataBean();
-					myportaldataBean.setPortalname(p.getPortalName());
-					myportaldataBean.setCountry(p.getCountry());
-					myportaldataBean.setUrl(p.getUrl());
-					myportaldataBean.setUsername(p.getUserName());
-					myportaldataBean.setPassword(p.getPassword());
-					myportaldataBean.setId(p.getPortalId());
-					list.add(myportaldataBean);
-
-				}
-
-			} catch (Exception e) {
+				myportaltable = (List<Portal>) q.getResultList();
+					} catch (Exception e) {
 				e.printStackTrace();
 			}
-			return list;
+			return myportaltable;
 		}
-			
+	    
+		// get
+	    @Transactional(value = "transactionManager")
+	    @Override
 	    public Portal myPortalview(int id) {
 	    	Portal portal=null;
 			try {
@@ -120,8 +97,127 @@ public class NrgDaoImpl implements NrgDao {
 				e.printStackTrace();
 				return portal;
 			}
+	
+	    }
+	    
+	    // update
+	    @Transactional(value = "transactionManager")
+	    @Override
+		public String myPortalupdate(Portal portal) {
+			try {
+				entitymanager.merge(portal);
+				return "success";
+			} catch (Exception e) {				
+				e.printStackTrace();
+				return "fail";
+			}
+	
+	    
+		}
+		
+	    
+	    // remove	    
+	    @Transactional(value = "transactionManager")
+	    @Override
+	    public String myPortaldelete(int id) {
+	    	Portal portal=null;
+	    	String status=null;
+			try {
+				portal = entitymanager.find(Portal.class, id);
+				entitymanager.remove(portal);
+				status="success";
+				return status;
+			} catch (Exception e) {		
+				status="fail";
+				e.printStackTrace();
+				return status;
+			}
 			//return portal;
 		
 	    }
+	    
+	    /* Production Issues */
+	    
+		@Override
+		@Transactional(value = "transactionManager")
+		public String save(ProductionIssue issue) {
+			String status = "Fail";
+			try {
+				Date createddate = new Date();
+				issue.setStatus("Active");
+				issue.setCreatedDate(createddate);
+				issue.setUpdatedDate(createddate);
+				entitymanager.persist(issue);
+				entitymanager.flush();
+				entitymanager.clear();
+				status = "success";
+				//}
+			} catch (Exception e) {
+
+			}
+			return status;
+		
+		}
+		
+		@Override
+		@Transactional(value = "transactionManager")
+		public String update(ProductionIssue issue) {
+			try {
+				entitymanager.merge(issue);
+				return "success";
+			} catch (Exception e) {				
+				e.printStackTrace();
+				return "fail";
+			}
+		}
+		
+		@Override
+		@Transactional(value = "transactionManager")
+		public List<ProductionIssue> load(List<ProductionIssue> issue){
+			try {
+				Query q = null;
+				q = entitymanager.createQuery("from ProductionIssue order by updatedDate desc");
+				issue = (List<ProductionIssue>) q.getResultList();
+					} catch (Exception e) {
+				e.printStackTrace();
+			}
+			return issue;
+		
+		}
+		
+		@Override
+		@Transactional(value = "transactionManager")
+		public ProductionIssue get(int id) {
+
+			ProductionIssue issue=null;
+			try {
+				issue = entitymanager.find(ProductionIssue.class, id);
+				return issue;
+			} catch (Exception e) {				
+				e.printStackTrace();
+				return issue;
+			}
+	
+	    
+		}
+		
+		@Override
+		@Transactional(value = "transactionManager")
+		public String remove(int id) {
+			ProductionIssue issue=null;
+	    	String status=null;
+			try {
+				issue = entitymanager.find(ProductionIssue.class, id);
+				entitymanager.remove(issue);
+				status="success";
+				return status;
+			} catch (Exception e) {		
+				status="fail";
+				e.printStackTrace();
+				return status;
+			}
+
+		}
+	    
 	    
 }

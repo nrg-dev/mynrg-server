@@ -61,6 +61,9 @@ public class Portal implements Serializable {
 	@Column(name="USER_NAME")
 	private String userName;
 
+	@Column(name="NOTES")
+	private String notes;
+	
 	public Portal() {
 	}
 
@@ -182,6 +185,14 @@ public class Portal implements Serializable {
 
 	public void setUserName(String userName) {
 		this.userName = userName;
+	}
+
+	public String getNotes() {
+		return notes;
+	}
+
+	public void setNotes(String notes) {
+		this.notes = notes;
 	}
 
 }

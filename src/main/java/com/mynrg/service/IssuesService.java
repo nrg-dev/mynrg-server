@@ -56,17 +56,15 @@ import javax.ws.rs.Produces;*/
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import com.google.gson.Gson;
-
 import com.mynrg.bo.NrgBo;
-
-import com.mynrg.model.Portal;
 import com.mynrg.model.ProductionIssue;
 
 @RestController
+@RequestMapping("/issues")
 @SpringBootApplication
-public class EndPointService implements Filter{
+public class IssuesService implements Filter{
 	
-public static final Logger logger = LoggerFactory.getLogger(EndPointService.class);
+public static final Logger logger = LoggerFactory.getLogger(IssuesService.class);
 
 	
 	
@@ -113,21 +111,21 @@ NrgBo nrgBo;
 	ArrayList<String> industryList;
 	
 	
-	// ---------------------------------------- save portal ----------------------------------------
+	// ---------------------------------------- save Issues ----------------------------------------
 	
 		
-		@PostMapping("/myPortalReg")
+		@PostMapping("/save")
 		//@CrossOrigin(origins = "http://35.162.40.190:80")
-		public String myPortalReg(@RequestBody Portal portal)throws JSONException
+		public String save(@RequestBody ProductionIssue issue)throws JSONException
 		{
-			System.out.println("--------Inside myPortal Reg------------");
-			logger.info("portalreg");
+			System.out.println("--------Inside issue Reg------------");
+			logger.info("issuereg");
 			String status="Fail"; 
 			 Gson gson = null;			
 			try{
 					
-				status = nrgBo.myPortalReg(portal);
-				logger.info("portal reg status------------>"+status);
+				status = nrgBo.save(issue);
+				logger.info("issue reg status------------>"+status);
 				gson = new Gson();
 			}
 			catch(Exception e){
@@ -137,84 +135,79 @@ NrgBo nrgBo;
 			return gson.toJson(status);
 		}
 		
-		// ---------- Get All portal ----------------
+		// ---------- Get All issue ----------------
 	
 		@Produces(MediaType.APPLICATION_JSON)
-		@RequestMapping(value="/myPortaltable",method=RequestMethod.GET)
-		public ResponseEntity<?>  myPortaltable()throws JSONException{
+		@RequestMapping(value="/load",method=RequestMethod.GET)
+		public ResponseEntity<?>  load()throws JSONException{
 	     
-			List<Portal> myportaltable=new ArrayList<Portal>();
+			List<ProductionIssue> productionissue=new ArrayList<ProductionIssue>();
 		      try{
 		      
-		    	  myportaltable= nrgBo.myportaltable(myportaltable);		       
-				  return new ResponseEntity<List<Portal>>(myportaltable, HttpStatus.CREATED);
+		    	  productionissue= nrgBo.load(productionissue);	
+		    	 
+				  return new ResponseEntity<List<ProductionIssue>>(productionissue, HttpStatus.CREATED);
 
 		      }
 		      catch(Exception e){
 		       e.printStackTrace();
 		      }
-		    return new ResponseEntity<List<Portal>>(myportaltable, HttpStatus.CREATED);
+		    return new ResponseEntity<List<ProductionIssue>>(productionissue, HttpStatus.CREATED);
 		     }
 		
 		
-		// ---------- Get single portal ----------------
+		// ---------- Get single issue ----------------
 		
 		@Produces(MediaType.APPLICATION_JSON)
-		@RequestMapping(value="/myPortalview",method=RequestMethod.GET)
-		public Portal  myPortalview(@RequestParam int id)throws JSONException{
-			System.out.println("inside my portal view");
-			Portal myPortalDataBean=null;//=new Portal();
+		@RequestMapping(value="/get",method=RequestMethod.GET)
+		public ProductionIssue  get(@RequestParam int id)throws JSONException{
+			System.out.println("inside ProductionIssue view");
+			ProductionIssue issue=null;//=new issue();
 		      try{
-		    	  myPortalDataBean = new Portal();
-		    	  myPortalDataBean= nrgBo.myPortalview(id);	
-		    	  System.out.println("portal name-->"+myPortalDataBean.getPortalName());
-		    	  System.out.println("portal name-->"+myPortalDataBean.getPortalId());
-
-		    	  return myPortalDataBean;
+		    	  issue = new ProductionIssue();
+		    	  issue= nrgBo.get(id);	
+		    	  return issue;
 		      }
 		      catch(Exception e){
 		       e.printStackTrace();
 		      }
-		    return myPortalDataBean;
+		    return issue;
 		     }
 	
-	   // ----------- update portal ----------------
-		@PutMapping("/myPortalupdate")
+	   // ----------- update issue ----------------
+		@PutMapping("/update")
 		@Produces(MediaType.APPLICATION_JSON)
 		@CrossOrigin(origins = "http://localhost:4200")
-		public ResponseEntity<Portal> myPortalupdate(@RequestBody Portal portal)throws JSONException
+		public ResponseEntity<ProductionIssue> update(@RequestBody ProductionIssue issue)throws JSONException
 		{
-			System.out.println("--------Inside myPortal Reg------------");
-			System.out.println("-------- Portal update Id ------------"+portal.getPortalId());	
+			System.out.println("--------Inside Issue  update------------");
+			//System.out.println("-------- issue update Id ------------"+issue.getissueId());
 			
-			logger.info("myPortalupdate");
-			String status="fail"; 
-			try{
-					
-				status = nrgBo.myPortalupdate(portal);
-				portal.setStatus(status);
-				logger.info("portal update status------------>"+status);
-				return new ResponseEntity<Portal>(portal, HttpStatus.ACCEPTED);
-
+			logger.info("Inside Issue  update");
+			String status="Fail"; 
+			try{					
+				status = nrgBo.update(issue);
+				issue.setStatus("success");
+				logger.info("Inside Issue  update  status------------>"+status);				
+				return new ResponseEntity<ProductionIssue>(issue, HttpStatus.CREATED);
 			}
 			catch(Exception e){
 				logger.warn("inside exception",e);
 				e.printStackTrace();
-				return new ResponseEntity<Portal>(portal, HttpStatus.CREATED);
-
+				return new ResponseEntity<ProductionIssue>(issue, HttpStatus.CREATED);
 
 			}
 		}
 		
-		// ----------  remove portal ----------------
+		// ----------  remove issue ----------------
 		
 		@Produces(MediaType.APPLICATION_JSON)
-		@DeleteMapping(value="/myPortaldelete")
-		public void  myPortaldelete(@RequestParam int id)throws JSONException{
-			System.out.println("inside my portal delete");
-			String status=null;//=new Portal();
+		@DeleteMapping(value="/remove")
+		public void  remove(@RequestParam int id)throws JSONException{
+			System.out.println(" Inside Issue   delete");
+			String status=null;//=new issue();
 		      try{
-		    	  status= nrgBo.myPortaldelete(id);	
+		    	  status= nrgBo.remove(id);	
 		    	  //return status;
 		      }
 		      catch(Exception e){

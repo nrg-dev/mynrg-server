@@ -6,11 +6,11 @@ import java.util.List;
 public class MyPortalDataBean {
 	
 	public int id;
-	public String portalname; 
+	public String portalName; 
 	public String country;
 	public String url;
 	public String emailID;
-	public String username;
+	public String userName;
 	public String password;
 	public String phonenumber;
 	public String currentUser;
@@ -28,12 +28,7 @@ public class MyPortalDataBean {
 	public void setCurrentUser(String currentUser) {
 		this.currentUser = currentUser;
 	}
-	public String getPortalname() {
-		return portalname;
-	}
-	public void setPortalname(String portalname) {
-		this.portalname = portalname;
-	}
+	
 	public String getCountry() {
 		return country;
 	}
@@ -52,12 +47,7 @@ public class MyPortalDataBean {
 	public void setEmailID(String emailID) {
 		this.emailID = emailID;
 	}
-	public String getUsername() {
-		return username;
-	}
-	public void setUsername(String username) {
-		this.username = username;
-	}
+	
 	public String getPassword() {
 		return password;
 	}
@@ -69,6 +59,18 @@ public class MyPortalDataBean {
 	}
 	public void setPhonenumber(String phonenumber) {
 		this.phonenumber = phonenumber;
+	}
+	public String getPortalName() {
+		return portalName;
+	}
+	public void setPortalName(String portalName) {
+		this.portalName = portalName;
+	}
+	public String getUserName() {
+		return userName;
+	}
+	public void setUserName(String userName) {
+		this.userName = userName;
 	}
 	
 }
