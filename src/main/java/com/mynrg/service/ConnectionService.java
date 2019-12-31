@@ -24,7 +24,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -40,33 +39,18 @@ import javax.servlet.FilterConfig;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
-/*import javax.servlet.FilterChain;
-import javax.servlet.FilterConfig;
-import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.util.ArrayList;
-import java.util.Collection;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.Produces;*/
-//import org.springframework.http.MediaType;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import com.google.gson.Gson;
-
 import com.mynrg.bo.NrgBo;
-
-import com.mynrg.model.Portal;
-import com.mynrg.model.ProductionIssue;
+import com.mynrg.model.Connection;
 
 @RestController
+@RequestMapping("/connection")
 @SpringBootApplication
-public class EndPointService implements Filter{
+public class ConnectionService implements Filter{
 	
-public static final Logger logger = LoggerFactory.getLogger(EndPointService.class);
+public static final Logger logger = LoggerFactory.getLogger(ConnectionService.class);
 
 	
 	
@@ -74,20 +58,14 @@ public static final Logger logger = LoggerFactory.getLogger(EndPointService.clas
 @Autowired
 NrgBo nrgBo;
 
-	/*enum Industry 
-    { 
-		CivilEngineering, SoftwareDevelopment, Others; 
-    } */
+	
 
 	enum Day 
 	{ 
 	    SUNDAY,MONDAY,TUESDAY,WEDNESDAY,THURSDAY,FRIDAY,SATURDAY; 
 	} 
 	
-	/*enum Month 
-	{ 
-		January,February,March,April,May,June,July,August,September,October,November,December; 
-	} */
+	
 	
 	@Override
 	public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain) throws IOException, ServletException {
@@ -113,21 +91,21 @@ NrgBo nrgBo;
 	ArrayList<String> industryList;
 	
 	
-	// ---------------------------------------- save portal ----------------------------------------
+	// ---------------------------------------- save connection ----------------------------------------
 	
 		
-		@PostMapping("/myPortalReg")
+		@PostMapping("/save")
 		@CrossOrigin(origins = "http://35.160.115.237:80")
-		public String myPortalReg(@RequestBody Portal portal)throws JSONException
+		public String saveConnection(@RequestBody Connection connection)throws JSONException
 		{
-			System.out.println("--------Inside myPortal Reg------------");
-			logger.info("portalreg");
+			logger.info("--------Inside saveConnection ------------");
+			logger.info("issuereg");
 			String status="Fail"; 
 			 Gson gson = null;			
 			try{
 					
-				status = nrgBo.myPortalReg(portal);
-				logger.info("portal reg status------------>"+status);
+				status = nrgBo.saveConnection(connection);
+				logger.info("saveConnection status------------>"+status);
 				gson = new Gson();
 			}
 			catch(Exception e){
@@ -137,92 +115,83 @@ NrgBo nrgBo;
 			return gson.toJson(status);
 		}
 		
-		// ---------- Get All portal ----------------
+		// ---------- loadConnection ----------------
 	
 		@Produces(MediaType.APPLICATION_JSON)
 		@CrossOrigin(origins = "http://35.160.115.237:80")
-		@RequestMapping(value="/myPortaltable",method=RequestMethod.GET)
-		public ResponseEntity<?>  myPortaltable()throws JSONException{
+		@RequestMapping(value="/load",method=RequestMethod.GET)
+		public ResponseEntity<?>  loadConnection()throws JSONException{
 	     
-			List<Portal> myportaltable=new ArrayList<Portal>();
+			List<Connection> connection=new ArrayList<Connection>();
 		      try{
 		      
-		    	  myportaltable= nrgBo.myportaltable(myportaltable);		       
-				  return new ResponseEntity<List<Portal>>(myportaltable, HttpStatus.CREATED);
+		    	  connection= nrgBo.loadConnection(connection);	
+		    	 
+				  return new ResponseEntity<List<Connection>>(connection, HttpStatus.CREATED);
 
 		      }
 		      catch(Exception e){
 		       e.printStackTrace();
 		      }
-		    return new ResponseEntity<List<Portal>>(myportaltable, HttpStatus.CREATED);
+		    return new ResponseEntity<List<Connection>>(connection, HttpStatus.CREATED);
 		     }
 		
 		
-		// ---------- Get single portal ----------------
+		// ---------- getConnection ----------------
 		
 		@Produces(MediaType.APPLICATION_JSON)
 		@CrossOrigin(origins = "http://35.160.115.237:80")
-		@RequestMapping(value="/myPortalview",method=RequestMethod.GET)
-		public Portal  myPortalview(@RequestParam int id)throws JSONException{
-			System.out.println("inside my portal view");
-			Portal myPortalDataBean=null;//=new Portal();
+		@RequestMapping(value="/get",method=RequestMethod.GET)
+		public Connection  getConnection(@RequestParam int id)throws JSONException{
+			logger.info("inside Connection view");
+			Connection connection=null;//=new issue();
 		      try{
-		    	  myPortalDataBean = new Portal();
-		    	  myPortalDataBean= nrgBo.myPortalview(id);	
-		    	  System.out.println("portal name-->"+myPortalDataBean.getPortalName());
-		    	  System.out.println("portal name-->"+myPortalDataBean.getPortalId());
-
-		    	  return myPortalDataBean;
+		    	  connection = new Connection();
+		    	  connection= nrgBo.getConnection(id);	
+		    	  return connection;
 		      }
 		      catch(Exception e){
 		       e.printStackTrace();
 		      }
-		    return myPortalDataBean;
+		    return connection;
 		     }
 	
-	   // ----------- update portal ----------------
-		@PutMapping("/myPortalupdate")
+	   // ----------- updateConnection  ----------------
+		@PutMapping("/update")
 		@CrossOrigin(origins = "http://35.160.115.237:80")
 		@Produces(MediaType.APPLICATION_JSON)
-		public ResponseEntity<Portal> myPortalupdate(@RequestBody Portal portal)throws JSONException
+		public ResponseEntity<Connection> updateConnection(@RequestBody Connection connection)throws JSONException
 		{
-			System.out.println("--------Inside myPortal Reg------------");
-			System.out.println("-------- Portal update Id ------------"+portal.getPortalId());	
-			
-			logger.info("myPortalupdate");
-			String status="fail"; 
-			try{
-					
-				status = nrgBo.myPortalupdate(portal);
-				portal.setStatus(status);
-				logger.info("portal update status------------>"+status);
-				return new ResponseEntity<Portal>(portal, HttpStatus.ACCEPTED);
-
+			logger.info("--------Inside Connection  update------------");		
+			logger.info("Inside Issue  update");
+			String status="Fail"; 
+			try{					
+				status = nrgBo.updateConnection(connection);
+				connection.setStatus("success");
+				logger.info("Inside Connection  update  status------------>"+status);				
+				return new ResponseEntity<Connection>(connection, HttpStatus.CREATED);
 			}
 			catch(Exception e){
 				logger.warn("inside exception",e);
 				e.printStackTrace();
-				return new ResponseEntity<Portal>(portal, HttpStatus.CREATED);
-
+				return new ResponseEntity<Connection>(connection, HttpStatus.CREATED);
 
 			}
 		}
 		
-		// ----------  remove portal ----------------
+		// ----------  removeConnection ----------------
 		
 		@Produces(MediaType.APPLICATION_JSON)
+		@DeleteMapping(value="/remove")
 		@CrossOrigin(origins = "http://35.160.115.237:80")
-		@DeleteMapping(value="/myPortaldelete")
-		public void  myPortaldelete(@RequestParam int id)throws JSONException{
-			System.out.println("inside my portal delete");
-			String status=null;//=new Portal();
+		public void  removeConnection(@RequestParam int id)throws JSONException{
+			logger.info(" Inside removeConnection   delete");
+			String status=null;//=new issue();
 		      try{
-		    	  status= nrgBo.myPortaldelete(id);	
-		    	  //return status;
+		    	  status= nrgBo.remove(id);	
 		      }
 		      catch(Exception e){
 			       e.printStackTrace();
-		    	 //return status;
 		      }
 		     }
 }

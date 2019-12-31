@@ -115,7 +115,7 @@ NrgBo nrgBo;
 	
 		
 		@PostMapping("/save")
-		//@CrossOrigin(origins = "http://35.162.40.190:80")
+		@CrossOrigin(origins = "http://35.160.115.237:80")
 		public String save(@RequestBody ProductionIssue issue)throws JSONException
 		{
 			System.out.println("--------Inside issue Reg------------");
@@ -138,6 +138,7 @@ NrgBo nrgBo;
 		// ---------- Get All issue ----------------
 	
 		@Produces(MediaType.APPLICATION_JSON)
+		@CrossOrigin(origins = "http://35.160.115.237:80")
 		@RequestMapping(value="/load",method=RequestMethod.GET)
 		public ResponseEntity<?>  load()throws JSONException{
 	     
@@ -159,6 +160,7 @@ NrgBo nrgBo;
 		// ---------- Get single issue ----------------
 		
 		@Produces(MediaType.APPLICATION_JSON)
+		@CrossOrigin(origins = "http://35.160.115.237:80")
 		@RequestMapping(value="/get",method=RequestMethod.GET)
 		public ProductionIssue  get(@RequestParam int id)throws JSONException{
 			System.out.println("inside ProductionIssue view");
@@ -176,8 +178,8 @@ NrgBo nrgBo;
 	
 	   // ----------- update issue ----------------
 		@PutMapping("/update")
+		@CrossOrigin(origins = "http://35.160.115.237:80")
 		@Produces(MediaType.APPLICATION_JSON)
-		@CrossOrigin(origins = "http://localhost:4200")
 		public ResponseEntity<ProductionIssue> update(@RequestBody ProductionIssue issue)throws JSONException
 		{
 			System.out.println("--------Inside Issue  update------------");
@@ -203,6 +205,7 @@ NrgBo nrgBo;
 		
 		@Produces(MediaType.APPLICATION_JSON)
 		@DeleteMapping(value="/remove")
+		@CrossOrigin(origins = "http://35.160.115.237:80")
 		public void  remove(@RequestParam int id)throws JSONException{
 			System.out.println(" Inside Issue   delete");
 			String status=null;//=new issue();

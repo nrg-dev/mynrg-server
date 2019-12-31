@@ -29,8 +29,10 @@ public class ServerInfo implements Serializable {
 	@Column(name="DNS_NAME")
 	private String dnsName;
 
+	@Column(name="NAME")
 	private String name;
 
+	@Column(name="PASSWORD")
 	private String password;
 
 	@Column(name="PRIVATE_HOSTNAME")
@@ -39,6 +41,7 @@ public class ServerInfo implements Serializable {
 	@Column(name="PUBLIC_HOSTNAME")
 	private String publicHostname;
 
+	@Column(name="STATUS")
 	private String status;
 
 	@Column(name="UPDATED_PERSON")
@@ -46,7 +49,7 @@ public class ServerInfo implements Serializable {
 
 	@Temporal(TemporalType.DATE)
 	@Column(name="`UPDATED-DATE`")
-	private Date updated_date;
+	private Date updatedDate;
 
 	@Column(name="USER_NAME")
 	private String userName;
@@ -135,11 +138,11 @@ public class ServerInfo implements Serializable {
 	}
 
 	public Date getUpdated_date() {
-		return this.updated_date;
+		return this.updatedDate;
 	}
 
-	public void setUpdated_date(Date updated_date) {
-		this.updated_date = updated_date;
+	public void setUpdated_date(Date updatedDate) {
+		this.updatedDate = updatedDate;
 	}
 
 	public String getUserName() {

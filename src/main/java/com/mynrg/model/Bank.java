@@ -4,6 +4,8 @@ import java.io.Serializable;
 
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.util.Date;
 import java.util.List;
 
@@ -79,6 +81,7 @@ public class Bank implements Serializable {
 
 	//bi-directional many-to-one association to Transaction
 	@OneToMany(mappedBy="bank")
+	@JsonIgnore
 	private List<Transaction> transactions;
 
 	public Bank() {
