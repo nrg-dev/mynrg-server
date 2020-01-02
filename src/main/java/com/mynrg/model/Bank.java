@@ -78,12 +78,17 @@ public class Bank implements Serializable {
 	@Temporal(TemporalType.DATE)
 	@Column(name="UPDATES_DATE")
 	private Date updatesDate;
-
-	//bi-directional many-to-one association to Transaction
-	@OneToMany(mappedBy="bank")
-	@JsonIgnore
-	private List<Transaction> transactions;
-
+	
+	@Column(name="NOTES")
+	private String notes;
+	
+	/*
+	 * //bi-directional many-to-one association to Transaction
+	 * 
+	 * @OneToMany(mappedBy="bank",orphanRemoval=true)
+	 * 
+	 * @JsonIgnore private List<Transaction> transactions;
+	 */
 	public Bank() {
 	}
 
@@ -239,26 +244,33 @@ public class Bank implements Serializable {
 		this.updatesDate = updatesDate;
 	}
 
-	public List<Transaction> getTransactions() {
-		return this.transactions;
+	
+	
+	
+	public String getNotes() {
+		return notes;
 	}
 
-	public void setTransactions(List<Transaction> transactions) {
-		this.transactions = transactions;
+	public void setNotes(String notes) {
+		this.notes = notes;
 	}
+	/*
+	 * public List<Transaction> getTransactions() { return this.transactions; }
+	 * 
+	 * public void setTransactions(List<Transaction> transactions) {
+	 * this.transactions = transactions; }
+	 */
 
-	public Transaction addTransaction(Transaction transaction) {
-		getTransactions().add(transaction);
-		transaction.setBank(this);
-
-		return transaction;
-	}
-
-	public Transaction removeTransaction(Transaction transaction) {
-		getTransactions().remove(transaction);
-		transaction.setBank(null);
-
-		return transaction;
-	}
+	/*
+	 * public Transaction addTransaction(Transaction transaction) {
+	 * getTransactions().add(transaction); transaction.setBank(this);
+	 * 
+	 * return transaction; }
+	 * 
+	 * public Transaction removeTransaction(Transaction transaction) {
+	 * getTransactions().remove(transaction); transaction.setBank(null);
+	 * 
+	 * return transaction; }
+	 */
 
 }

@@ -61,11 +61,13 @@ public class Transaction implements Serializable {
 	@Column(name="UPDATED_PERSON")
 	private String updatedPerson;
 
-	//bi-directional many-to-one association to Bank
-	@ManyToOne
-	@JoinColumn(name="HASH_ACCOUNT_ID")
-	private Bank bank;
-
+	/*
+	 * //bi-directional many-to-one association to Bank
+	 * 
+	 * @ManyToOne
+	 * 
+	 * @JoinColumn(name="HASH_ACCOUNT_ID") private Bank bank;
+	 */
 	public Transaction() {
 	}
 
@@ -189,12 +191,10 @@ public class Transaction implements Serializable {
 		this.updatedPerson = updatedPerson;
 	}
 
-	public Bank getBank() {
-		return this.bank;
-	}
-
-	public void setBank(Bank bank) {
-		this.bank = bank;
-	}
+	/*
+	 * public Bank getBank() { return this.bank; }
+	 * 
+	 * public void setBank(Bank bank) { this.bank = bank; }
+	 */
 
 }

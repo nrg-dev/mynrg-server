@@ -108,6 +108,8 @@ public class NrgDaoImpl implements NrgDao {
 	    @Override
 		public String myPortalupdate(Portal portal) {
 			try {
+				Date updateddate = new Date();
+				portal.setUpdatedDate(updateddate);
 				entitymanager.merge(portal);
 				return "success";
 			} catch (Exception e) {				
@@ -290,7 +292,7 @@ public class NrgDaoImpl implements NrgDao {
 	@Transactional(value = "transactionManager")
 	public String removeConnection(int id) {
 
-		Connection connection=null;
+		Connection connection;
     	String status=null;
 		try {
 			connection = entitymanager.find(Connection.class, id);

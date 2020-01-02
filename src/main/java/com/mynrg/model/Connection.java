@@ -65,7 +65,7 @@ public class Connection implements Serializable {
 	@Column(name="SKYPE_PASSWORD")
 	private String skypePassword;
 
-	
+
 	public Connection() {
 	}
 

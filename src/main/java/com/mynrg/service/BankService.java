@@ -95,23 +95,26 @@ NrgBo nrgBo;
 	
 		
 		@PostMapping("/save")
+		@Produces(MediaType.APPLICATION_JSON)
 		@CrossOrigin(origins = "http://35.160.115.237:80")
-		public String saveBank(@RequestBody Bank bank)throws JSONException
+		public ResponseEntity<Bank> saveBank(@RequestBody Bank bank)throws JSONException
 		{
 			logger.info("--------Inside save Bank ------------");
 			String status="Fail"; 
-			 Gson gson = null;			
 			try{
 					
 				status = nrgBo.saveBank(bank);
+				bank.setStatus(status);
 				logger.info("saveBank status------------>"+status);
-				gson = new Gson();
+			    return new ResponseEntity<Bank>(bank, HttpStatus.CREATED);
+			   // return status;
 			}
 			catch(Exception e){
+				
 				logger.warn("inside exception",e);
-				e.printStackTrace();
+			    return new ResponseEntity<Bank>(bank, HttpStatus.CREATED);
+			   // return status;
 			}
-			return gson.toJson(status);
 		}
 		
 		// ---------- load ----------------

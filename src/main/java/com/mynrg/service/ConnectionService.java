@@ -188,7 +188,7 @@ NrgBo nrgBo;
 			logger.info(" Inside removeConnection   delete");
 			String status=null;//=new issue();
 		      try{
-		    	  status= nrgBo.remove(id);	
+		    	  status= nrgBo.removeConnection(id);	
 		      }
 		      catch(Exception e){
 			       e.printStackTrace();

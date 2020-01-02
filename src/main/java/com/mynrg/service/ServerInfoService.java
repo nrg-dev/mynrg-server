@@ -98,14 +98,14 @@ NrgBo nrgBo;
 		@CrossOrigin(origins = "http://35.160.115.237:80")
 		public String saveServerInfo(@RequestBody ServerInfo serverinfo)throws JSONException
 		{
-			logger.info("--------Inside saveConnection ------------");
+			logger.info("--------Inside saveServerInfo ------------");
 			logger.info("issuereg");
 			String status="Fail"; 
 			 Gson gson = null;			
 			try{
 					
 				status = nrgBo.saveServerInfo(serverinfo);
-				logger.info("saveConnection status------------>"+status);
+				logger.info("saveServerInfo status------------>"+status);
 				gson = new Gson();
 			}
 			catch(Exception e){
@@ -143,7 +143,7 @@ NrgBo nrgBo;
 		@CrossOrigin(origins = "http://35.160.115.237:80")
 		@RequestMapping(value="/get",method=RequestMethod.GET)
 		public ServerInfo  getServerInfo(@RequestParam int id)throws JSONException{
-			logger.info("inside Connection view");
+			logger.info("inside saveServerInfo view");
 			ServerInfo serverinfo=null;//=new issue();
 		      try{
 		    	  serverinfo = new ServerInfo();
@@ -162,13 +162,13 @@ NrgBo nrgBo;
 		@Produces(MediaType.APPLICATION_JSON)
 		public ResponseEntity<ServerInfo> updateServerInfo(@RequestBody ServerInfo serverinfo)throws JSONException
 		{
-			logger.info("--------Inside Connection  update------------");		
-			logger.info("Inside Issue  update");
+			logger.info("--------Inside saveServerInfo  update------------");		
+			logger.info("Inside saveServerInfo  update");
 			String status="Fail"; 
 			try{					
 				status = nrgBo.updateServerInfo(serverinfo);
 				serverinfo.setStatus("success");
-				logger.info("Inside Connection  update  status------------>"+status);				
+				logger.info("Inside saveServerInfo  update  status------------>"+status);				
 				return new ResponseEntity<ServerInfo>(serverinfo, HttpStatus.CREATED);
 			}
 			catch(Exception e){
@@ -185,10 +185,10 @@ NrgBo nrgBo;
 		@DeleteMapping(value="/remove")
 		@CrossOrigin(origins = "http://35.160.115.237:80")
 		public void  removeServerInfo(@RequestParam int id)throws JSONException{
-			logger.info(" Inside removeConnection   delete");
+			logger.info(" Inside saveServerInfo   delete");
 			String status=null;//=new issue();
 		      try{
-		    	  status= nrgBo.remove(id);	
+		    	  status= nrgBo.removeServerInfo(id);	
 		      }
 		      catch(Exception e){
 			       e.printStackTrace();

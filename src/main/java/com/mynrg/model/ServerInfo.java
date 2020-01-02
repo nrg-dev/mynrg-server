@@ -15,22 +15,22 @@ import java.util.Date;
 public class ServerInfo implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-	@Id
+	@Id @GeneratedValue(strategy=GenerationType.AUTO)
 	@Column(name="SERVER_INFO_ID")
 	private int serverInfoId;
 
+	@Column(name="NAME")
+	private String name;
+	
+	@Column(name="DNS_NAME")
+	private String dnsName;
+	
 	@Temporal(TemporalType.DATE)
 	@Column(name="CREATED_DATE")
 	private Date createdDate;
 
-	@Column(name="CREATED_PERSON")
-	private String createdPerson;
-
-	@Column(name="DNS_NAME")
-	private String dnsName;
-
-	@Column(name="NAME")
-	private String name;
+	@Column(name="USER_NAME")
+	private String userName;
 
 	@Column(name="PASSWORD")
 	private String password;
@@ -43,6 +43,10 @@ public class ServerInfo implements Serializable {
 
 	@Column(name="STATUS")
 	private String status;
+	
+	@Column(name="COUNTRY")
+	private String country;
+
 
 	@Column(name="UPDATED_PERSON")
 	private String updatedPerson;
@@ -51,8 +55,13 @@ public class ServerInfo implements Serializable {
 	@Column(name="`UPDATED-DATE`")
 	private Date updatedDate;
 
-	@Column(name="USER_NAME")
-	private String userName;
+	@Column(name="CREATED_PERSON")
+	private String createdPerson;
+
+	
+	@Column(name="NOTES")
+	private String notes;
+	
 
 	public ServerInfo() {
 	}
@@ -71,6 +80,22 @@ public class ServerInfo implements Serializable {
 
 	public void setCreatedDate(Date createdDate) {
 		this.createdDate = createdDate;
+	}
+
+	public String getCountry() {
+		return country;
+	}
+
+	public void setCountry(String country) {
+		this.country = country;
+	}
+
+	public Date getUpdatedDate() {
+		return updatedDate;
+	}
+
+	public void setUpdatedDate(Date updatedDate) {
+		this.updatedDate = updatedDate;
 	}
 
 	public String getCreatedPerson() {
@@ -153,4 +178,14 @@ public class ServerInfo implements Serializable {
 		this.userName = userName;
 	}
 
+	public String getNotes() {
+		return notes;
+	}
+
+	public void setNotes(String notes) {
+		this.notes = notes;
+	}
+
+	
+	
 }
