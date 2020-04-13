@@ -1,6 +1,7 @@
 package com.mynrg.bo;
 
 import java.util.List;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -61,7 +62,7 @@ public class NrgBoImpl implements NrgBo{
 	
 	// Production Issues 
 	@Override
-	public boolean save(ProductionIssueDataBean issue) {
+	public boolean save(ProductionIssue issue) {
 		return dao.save(issue);
 	}
 	@Override
@@ -81,7 +82,11 @@ public class NrgBoImpl implements NrgBo{
 		return dao.remove(id);
 	}
 		
-
+	@Override
+	public Map<String,Integer> reportLoad() {
+		return dao.reportLoad();
+	}
+		
 	
 	// Connection Issues 
 	@Override

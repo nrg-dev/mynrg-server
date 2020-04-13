@@ -3,6 +3,7 @@ package com.mynrg.bo;
 //import java.util.ArrayList;
 //import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,11 +30,12 @@ public interface NrgBo {
 	public String myPortaldelete(int id);
 	
 	// Production Issues 
-	public boolean save(ProductionIssueDataBean issue);
+	public boolean save(ProductionIssue issue);
 	public String update(ProductionIssue issue);	
 	public List<ProductionIssue> load(List<ProductionIssue> issue);
 	public ProductionIssue get(int id);
 	public String remove(int id);
+	public Map<String,Integer> reportLoad();
 	
 	// Connection Issues 
 	public String saveConnection(Connection connection);

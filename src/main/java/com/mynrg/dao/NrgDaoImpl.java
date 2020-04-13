@@ -4,7 +4,9 @@ import java.sql.Blob;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Singleton;
 
@@ -149,18 +151,66 @@ public class NrgDaoImpl implements NrgDao {
 	    
 	    /* Production Issues */
 	    
+	    
+	    @Override
+		@Transactional(value = "transactionManager")
+		public Map<String,Integer> reportLoad() {
+			Map<String,Integer> map=new HashMap<String,Integer>();
+			Query q = null;
+			// by status
+			q = entitymanager.createQuery("select count(issue_status) from ProductionIssue where issue_status like '%Open'");
+		    Number cResults1=(Number) q.getSingleResult();
+		    q = entitymanager.createQuery("select count(issue_status) from ProductionIssue where issue_status like '%In Progress'");
+		    Number cResults2=(Number) q.getSingleResult();
+		    q = entitymanager.createQuery("select count(issue_status) from ProductionIssue where issue_status like '%Ready For Development'");
+		    Number cResults3=(Number) q.getSingleResult();
+		    q = entitymanager.createQuery("select count(issue_status) from ProductionIssue where issue_status like '%Development Completed'");
+		    Number cResults4=(Number) q.getSingleResult();
+			 		    
+		 		 
+		    // by priority
+		    q = entitymanager.createQuery("select count(priority) from ProductionIssue where priority like '%Critical'");
+		    Number cResults5=(Number) q.getSingleResult();
+			q = entitymanager.createQuery("select count(priority) from ProductionIssue where priority like '%Highest'");
+		    Number cResults6=(Number) q.getSingleResult();
+			q = entitymanager.createQuery("select count(priority) from ProductionIssue where priority like '%High'");
+		    Number cResults7=(Number) q.getSingleResult();
+			 		    
+		 		   
+		    logger.info("Open Count-->"+cResults1);
+		    logger.info("In Progress Count-->"+cResults2);
+		    logger.info("Ready For Development Count-->"+cResults3);
+		    logger.info("Development Completed Count-->"+cResults3);
+		    // by Status
+		    map.put("key1", cResults1.intValue());
+		    map.put("key2", cResults2.intValue());
+		    map.put("key3", cResults3.intValue());
+		    map.put("key4", cResults4.intValue());
+		    // by Priority
+		    map.put("key5", cResults5.intValue());
+		    map.put("key6", cResults6.intValue());
+		    map.put("key7", cResults7.intValue());
+		    
+			return map;
+		}
+			
 		@Override
 		@Transactional(value = "transactionManager")
-		public boolean save(ProductionIssueDataBean issue) {
-			logger.info("Issue Notes-->"+issue.issueNotes);
-			logger.info("Clinet name-->"+issue.clientName);
-			logger.info("Priority-->"+issue.priority);
-			logger.info("Country-->"+issue.country);
-			logger.info("base 64-->"+issue.cardImageBase64);
+		public boolean save(ProductionIssue issue) {
+			logger.info("Issue status-->"+issue.getIssueStatus());
+		/*
+		 * logger.info("Issue Notes-->"+issue.issueNotes);
+		 * logger.info("Clinet name-->"+issue.clientName);
+		 * logger.info("Priority-->"+issue.priority);
+		 * logger.info("Country-->"+issue.country);
+		 * logger.info("base 64-->"+issue.cardImageBase64);
+		 */
 			try {
 			
-			  byte byte_string[]=issue.getCardImageBase64().getBytes(); 
-			  Blob blob= new SerialBlob(byte_string);
+			/*
+			 * byte byte_string[]=issue.getCardImageBase64().getBytes(); Blob blob= new
+			 * SerialBlob(byte_string);
+			 */
 			  //ProductionIssue prodissue = new ProductionIssue();
 			 
 			/*
@@ -170,20 +220,22 @@ public class NrgDaoImpl implements NrgDao {
 			 */
 				
 				
-				ProductionIssue prodissue = new ProductionIssue();
+				//ProductionIssue prodissue = new ProductionIssue();
 				Date createddate = new Date();
 				System.out.println("Before Set the blob");
-				prodissue.setCardImageBase64(issue.getCardImageBase64());
+				issue.setCardImageBase64(issue.getCardImageBase64());
 				System.out.println("After Set the blob");
-				prodissue.setStatus("Active");
-				prodissue.setCreatedDate(createddate);
-				prodissue.setUpdatedDate(createddate);
-				prodissue.setCreatedPerson(issue.getCreatedPerson());
-				prodissue.setClientName(issue.getClientName());
-				prodissue.setIssueNotes(issue.getIssueNotes());
-				prodissue.setPriority(issue.getPriority());
-				prodissue.setProduct(issue.getProduct());
-				entitymanager.persist(prodissue);
+				issue.setStatus("Active");
+				issue.setCreatedDate(createddate);
+				issue.setUpdatedDate(createddate);
+			/*
+			 * prodissue.setCreatedPerson(issue.getCreatedPerson());
+			 * prodissue.setClientName(issue.getClientName());
+			 * prodissue.setIssueNotes(issue.getIssueNotes());
+			 * prodissue.setPriority(issue.getPriority());
+			 * prodissue.setProduct(issue.getProduct());
+			 */
+				entitymanager.persist(issue);
 				entitymanager.flush();
 				entitymanager.clear();
 				//}
@@ -197,7 +249,16 @@ public class NrgDaoImpl implements NrgDao {
 		@Override
 		@Transactional(value = "transactionManager")
 		public String update(ProductionIssue issue) {
+			logger.info("issue id-->"+issue.getIssueId());
 			try {
+			/*
+			 * ProductionIssue res = new ProductionIssue(); res =
+			 * entitymanager.find(ProductionIssue.class, issue.getIssueId());
+			 * res.setIssueStatus(issue.getIssueStatus());
+			 * res.setClientName(issue.getClientName());
+			 * res.setPriority(issue.getPriority()); res.setCountry(issue.getCountry());
+			 * res.setIssueNotes(issue.getIssueNotes());
+			 */
 				entitymanager.merge(issue);
 				return "success";
 			} catch (Exception e) {				

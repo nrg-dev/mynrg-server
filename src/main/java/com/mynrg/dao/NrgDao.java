@@ -2,6 +2,7 @@ package com.mynrg.dao;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import com.mynrg.dto.MyPortalDataBean;
 import com.mynrg.dto.ProductionIssueDataBean;
@@ -23,11 +24,13 @@ public interface NrgDao {
 	
 	
 	// Production Issues 
-	public boolean save(ProductionIssueDataBean issue);
+	public boolean save(ProductionIssue issue);
 	public String update(ProductionIssue issue);	
 	public List<ProductionIssue> load(List<ProductionIssue> issue);
 	public ProductionIssue get(int id);
 	public String remove(int id);
+	public Map<String,Integer> reportLoad();
+
 		
 	// Connection Issues 
 	public String saveConnection(Connection connection);
