@@ -7,6 +7,7 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.mynrg.dto.ProductionIssueDataBean;
 import com.mynrg.model.Bank;
 import com.mynrg.model.Connection;
 //import com.mynrg.dto.MyPortalDataBean;
@@ -28,7 +29,7 @@ public interface NrgBo {
 	public String myPortaldelete(int id);
 	
 	// Production Issues 
-	public String save(ProductionIssue issue);
+	public boolean save(ProductionIssueDataBean issue);
 	public String update(ProductionIssue issue);	
 	public List<ProductionIssue> load(List<ProductionIssue> issue);
 	public ProductionIssue get(int id);

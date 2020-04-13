@@ -1,5 +1,6 @@
 package com.mynrg.dao;
 
+import java.sql.Blob;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -7,14 +8,17 @@ import java.util.List;
 
 import javax.inject.Singleton;
 
+import org.hibernate.Session;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 //import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StreamUtils;
 
 import com.mynrg.dto.MyPortalDataBean;
+import com.mynrg.dto.ProductionIssueDataBean;
 import com.mynrg.model.Bank;
 import com.mynrg.model.Connection;
 import com.mynrg.model.Portal;
@@ -27,6 +31,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import javax.sql.rowset.serial.SerialBlob;
 
 
 
@@ -39,12 +44,13 @@ public class NrgDaoImpl implements NrgDao {
 	@PersistenceContext(unitName="mynrg-pu")
 	private EntityManager entitymanager;
 	
-	 @Value("${memeber.silver}")
-	 private String silver;
-	 @Value("${memeber.gold}")
-	 private String gold;
-	 @Value("${memeber.platinum}")
-	 private String platinum;
+	/*
+	 * @Value("${memeber.silver}") private String silver;
+	 * 
+	 * @Value("${memeber.gold}") private String gold;
+	 * 
+	 * @Value("${memeber.platinum}") private String platinum;
+	 */
 	 
 
 	 
@@ -145,22 +151,46 @@ public class NrgDaoImpl implements NrgDao {
 	    
 		@Override
 		@Transactional(value = "transactionManager")
-		public String save(ProductionIssue issue) {
-			String status = "Fail";
+		public boolean save(ProductionIssueDataBean issue) {
+			logger.info("Issue Notes-->"+issue.issueNotes);
+			logger.info("Clinet name-->"+issue.clientName);
+			logger.info("Priority-->"+issue.priority);
+			logger.info("Country-->"+issue.country);
+			logger.info("base 64-->"+issue.cardImageBase64);
 			try {
+			
+			  byte byte_string[]=issue.getCardImageBase64().getBytes(); 
+			  Blob blob= new SerialBlob(byte_string);
+			  //ProductionIssue prodissue = new ProductionIssue();
+			 
+			/*
+			 * byte[] byteData = issue.getCardImageBase64().getBytes("UTF-8");//Better to
+			 * specify encoding Blob blobData = dbConnection.createBlob();
+			 * blobData.setBytes(1, byteData);
+			 */
+				
+				
+				ProductionIssue prodissue = new ProductionIssue();
 				Date createddate = new Date();
-				issue.setStatus("Active");
-				issue.setCreatedDate(createddate);
-				issue.setUpdatedDate(createddate);
-				entitymanager.persist(issue);
+				System.out.println("Before Set the blob");
+				prodissue.setCardImageBase64(issue.getCardImageBase64());
+				System.out.println("After Set the blob");
+				prodissue.setStatus("Active");
+				prodissue.setCreatedDate(createddate);
+				prodissue.setUpdatedDate(createddate);
+				prodissue.setCreatedPerson(issue.getCreatedPerson());
+				prodissue.setClientName(issue.getClientName());
+				prodissue.setIssueNotes(issue.getIssueNotes());
+				prodissue.setPriority(issue.getPriority());
+				prodissue.setProduct(issue.getProduct());
+				entitymanager.persist(prodissue);
 				entitymanager.flush();
 				entitymanager.clear();
-				status = "success";
 				//}
 			} catch (Exception e) {
-
+				return false;
 			}
-			return status;
+			return true;
 		
 		}
 		

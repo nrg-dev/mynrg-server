@@ -1,6 +1,8 @@
 package com.mynrg.model;
 
 import java.io.Serializable;
+import java.sql.Blob;
+
 import javax.persistence.*;
 import java.util.Date;
 
@@ -47,6 +49,11 @@ public class ProductionIssue implements Serializable {
 	private String status;
 
 	private String team;
+	
+	//private Blob cardImageBase64;
+	//@Lob
+	@Column(columnDefinition = "MEDIUMTEXT")
+	private String cardImageBase64;
 
 	@Temporal(TemporalType.DATE)
 	@Column(name="UPDATED_DATE")
@@ -181,6 +188,14 @@ public class ProductionIssue implements Serializable {
 
 	public void setUser(User user) {
 		this.user = user;
+	}
+
+	public String getCardImageBase64() {
+		return cardImageBase64;
+	}
+
+	public void setCardImageBase64(String cardImageBase64) {
+		this.cardImageBase64 = cardImageBase64;
 	}
 
 }

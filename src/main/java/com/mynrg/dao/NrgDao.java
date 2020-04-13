@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.mynrg.dto.MyPortalDataBean;
+import com.mynrg.dto.ProductionIssueDataBean;
 import com.mynrg.model.Bank;
 import com.mynrg.model.Connection;
 import com.mynrg.model.Portal;
@@ -22,7 +23,7 @@ public interface NrgDao {
 	
 	
 	// Production Issues 
-	public String save(ProductionIssue issue);
+	public boolean save(ProductionIssueDataBean issue);
 	public String update(ProductionIssue issue);	
 	public List<ProductionIssue> load(List<ProductionIssue> issue);
 	public ProductionIssue get(int id);
