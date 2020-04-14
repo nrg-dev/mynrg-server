@@ -2,7 +2,9 @@ package com.mynrg.service;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /*import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
@@ -57,6 +59,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import com.google.gson.Gson;
 import com.mynrg.bo.NrgBo;
+import com.mynrg.dto.ProductionIssueDataBean;
 import com.mynrg.model.ProductionIssue;
 
 @RestController
@@ -116,23 +119,23 @@ NrgBo nrgBo;
 		
 		@PostMapping("/save")
 		@CrossOrigin(origins = "http://35.160.115.237:80")
-		public String save(@RequestBody ProductionIssue issue)throws JSONException
+		public ResponseEntity<?> save(@RequestBody ProductionIssue issue)throws JSONException
 		{
-			System.out.println("--------Inside issue Reg------------");
-			logger.info("issuereg");
-			String status="Fail"; 
-			 Gson gson = null;			
+			logger.info("save issues");
+			logger.debug("Issue status-->"+issue.getIssueStatus());
+			boolean status;//"Fail"; 
+			// Gson gson = null;			
 			try{
-					
+				logger.info("image base 64-->"+issue.getCardImageBase64());
 				status = nrgBo.save(issue);
-				logger.info("issue reg status------------>"+status);
-				gson = new Gson();
+				logger.info("issue reg status-->"+status);
+				//gson = new Gson();
 			}
 			catch(Exception e){
-				logger.warn("inside exception",e);
-				e.printStackTrace();
+				logger.error("Exception-->",e.getMessage());
+				  return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 			}
-			return gson.toJson(status);
+			  return new ResponseEntity<>(HttpStatus.OK);
 		}
 		
 		// ---------- Get All issue ----------------
@@ -141,8 +144,8 @@ NrgBo nrgBo;
 		@CrossOrigin(origins = "http://35.160.115.237:80")
 		@RequestMapping(value="/load",method=RequestMethod.GET)
 		public ResponseEntity<?>  load()throws JSONException{
-	     
-			List<ProductionIssue> productionissue=new ArrayList<ProductionIssue>();
+			logger.info("load all issues");
+	        List<ProductionIssue> productionissue=new ArrayList<ProductionIssue>();
 		      try{
 		      
 		    	  productionissue= nrgBo.load(productionissue);	
@@ -156,6 +159,23 @@ NrgBo nrgBo;
 		    return new ResponseEntity<List<ProductionIssue>>(productionissue, HttpStatus.CREATED);
 		     }
 		
+		// ---------- Get All issue ----------------
+		
+			@Produces(MediaType.APPLICATION_JSON)
+			@CrossOrigin(origins = "http://35.160.115.237:80")
+			@RequestMapping(value="/reportLoad",method=RequestMethod.GET)
+			public ResponseEntity<?>  reportLoad()throws JSONException{
+				logger.info("load reportLoad");
+				Map<String,Integer> map=new HashMap<String,Integer>();
+			      try{
+			       	  map = nrgBo.reportLoad();	
+			    	  return new ResponseEntity<Map<String,Integer>>(map, HttpStatus.OK);
+			      }
+			      catch(Exception e){
+			       e.printStackTrace();
+			      }
+				  return new ResponseEntity<Map<String,Integer>>(map, HttpStatus.OK);
+			     }
 		
 		// ---------- Get single issue ----------------
 		
