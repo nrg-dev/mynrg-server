@@ -269,12 +269,23 @@ public class NrgDaoImpl implements NrgDao {
 		
 		@Override
 		@Transactional(value = "transactionManager")
-		public List<ProductionIssue> load(List<ProductionIssue> issue){
+		public List<ProductionIssue> load(List<ProductionIssue> issue,String status){
 			try {
 				Query q = null;
-				q = entitymanager.createQuery("from ProductionIssue order by updatedDate desc");
-				issue = (List<ProductionIssue>) q.getResultList();
-					} catch (Exception e) {
+				if(status.equalsIgnoreCase("All")) {
+					q = entitymanager.createQuery("from ProductionIssue order by updatedDate desc");
+					//q.setP
+					issue = (List<ProductionIssue>) q.getResultList();
+				}else {
+					q = entitymanager.createQuery("from ProductionIssue where  issueStatus = '" + status + "'");
+					//q.setP
+					issue = (List<ProductionIssue>) q.getResultList();
+					issue = (List<ProductionIssue>) q.getResultList();
+				}
+
+				
+			
+			} catch (Exception e) {
 				e.printStackTrace();
 			}
 			return issue;

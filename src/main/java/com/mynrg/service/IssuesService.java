@@ -143,14 +143,13 @@ NrgBo nrgBo;
 		@Produces(MediaType.APPLICATION_JSON)
 		@CrossOrigin(origins = "http://35.160.115.237:80")
 		@RequestMapping(value="/load",method=RequestMethod.GET)
-		public ResponseEntity<?>  load()throws JSONException{
+		public ResponseEntity<?>  load(String status)throws JSONException{
 			logger.info("load all issues");
 	        List<ProductionIssue> productionissue=new ArrayList<ProductionIssue>();
 		      try{
 		      
-		    	  productionissue= nrgBo.load(productionissue);	
-		    	 
-				  return new ResponseEntity<List<ProductionIssue>>(productionissue, HttpStatus.CREATED);
+		    	  productionissue= nrgBo.load(productionissue,status);	
+		    	  return new ResponseEntity<List<ProductionIssue>>(productionissue, HttpStatus.CREATED);
 
 		      }
 		      catch(Exception e){
