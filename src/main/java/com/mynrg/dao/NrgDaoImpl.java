@@ -33,6 +33,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import javax.persistence.TypedQuery;
 import javax.sql.rowset.serial.SerialBlob;
 
 
@@ -267,20 +268,59 @@ public class NrgDaoImpl implements NrgDao {
 			}
 		}
 		
+	
+		ProductionIssueRepo repo;
+		
 		@Override
 		@Transactional(value = "transactionManager")
-		public List<ProductionIssue> load(List<ProductionIssue> issue,String status){
+		public List<ProductionIssueDataBean> load(List<ProductionIssueDataBean> issuelist,String status){
+			logger.info("Inside loadIssue");
 			try {
 				Query q = null;
 				if(status.equalsIgnoreCase("All")) {
-					q = entitymanager.createQuery("from ProductionIssue order by updatedDate desc");
+				/*
+				 * if(repo!=null) { logger.info("Not Null"); } else { logger.info("Null"); }
+				 * List<ProductionIssue> empList = repo.loadIssues();
+				 */
+
+				//	q = entitymanager.createQuery("from ProductionIssue order by updatedDate desc");
+				//	q = entitymanager.createQuery("SELECT c.issueId c.issueNotes,c.clientName,c.status,c.priority FROM ProductionIssue AS c by updatedDate desc");
+
+				
+				  TypedQuery<Object[]> query = entitymanager.createQuery(
+				  "SELECT issueId, issueNotes,clientName,status,priority FROM ProductionIssue",
+				  Object[].class); 
+				  List<Object[]> results = query.getResultList();
+				  for (Object[] result : results) {
+					  ProductionIssueDataBean productionissuedatabean = new ProductionIssueDataBean();
+					  productionissuedatabean.setIssueId((Integer) result[0]);
+					  productionissuedatabean.setIssueNotes((String) result[1]);
+					  productionissuedatabean.setClientName((String) result[2]);
+					  productionissuedatabean.setStatus((String) result[3]);
+					  productionissuedatabean.setPriority((String) result[4]);
+					  issuelist.add(productionissuedatabean);
+				      logger.debug(
+				      "ID: " + result[0] + ", Notes: " + result[1]);
+				  }
+						
+				
+				/*
+				 * issue = (List<ProductionIssue>) entitymanager.createQuery(
+				 * "SELECT issueId, issueNotes,clientName,status,priority FROM ProductionIssue"
+				 * ,ProductionIssue.class).getResultList(); logger.info("Size-->"+issue.size());
+				 */
+				// issue = query.getResultList();
+				 logger.info("Size-->"+results.size());
+						  
 					//q.setP
-					issue = (List<ProductionIssue>) q.getResultList();
+					//issue = (List<ProductionIssue>) q.getResultList();
 				}else {
 					q = entitymanager.createQuery("from ProductionIssue where  issueStatus = '" + status + "'");
 					//q.setP
-					issue = (List<ProductionIssue>) q.getResultList();
-					issue = (List<ProductionIssue>) q.getResultList();
+				/*
+				 * issue = (List<ProductionIssue>) q.getResultList(); issue =
+				 * (List<ProductionIssue>) q.getResultList();
+				 */
 				}
 
 				
@@ -288,7 +328,7 @@ public class NrgDaoImpl implements NrgDao {
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-			return issue;
+			return issuelist;
 		
 		}
 		

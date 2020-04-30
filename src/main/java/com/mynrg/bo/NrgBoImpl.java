@@ -70,7 +70,7 @@ public class NrgBoImpl implements NrgBo{
 		return dao.update(issue);
 	}
 	@Override
-	public List<ProductionIssue> load(List<ProductionIssue> issue,String status){
+	public List<ProductionIssueDataBean> load(List<ProductionIssueDataBean> issue,String status){
 		return dao.load(issue,status);
 	}
 	@Override

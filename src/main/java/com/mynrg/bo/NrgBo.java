@@ -32,7 +32,7 @@ public interface NrgBo {
 	// Production Issues 
 	public boolean save(ProductionIssue issue);
 	public String update(ProductionIssue issue);	
-	public List<ProductionIssue> load(List<ProductionIssue> issue,String status);
+	public List<ProductionIssueDataBean> load(List<ProductionIssueDataBean> issue,String status);
 	public ProductionIssue get(int id);
 	public String remove(int id);
 	public Map<String,Integer> reportLoad();

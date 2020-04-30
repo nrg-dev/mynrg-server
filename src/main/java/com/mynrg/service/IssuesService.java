@@ -21,12 +21,13 @@ import org.codehaus.jettison.json.JSONException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -59,6 +60,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import com.google.gson.Gson;
 import com.mynrg.bo.NrgBo;
+import com.mynrg.dao.IssuesInterface;
 import com.mynrg.dto.ProductionIssueDataBean;
 import com.mynrg.model.ProductionIssue;
 
@@ -75,10 +77,19 @@ public static final Logger logger = LoggerFactory.getLogger(IssuesService.class)
 @Autowired
 NrgBo nrgBo;
 
+	/*
+	 * @Autowired(required=true) //@Qualifier("b") //required=true IssuesInterface
+	 * issuesinterface;
+	 * 
+	 * 
+	 */
+
 	/*enum Industry 
     { 
 		CivilEngineering, SoftwareDevelopment, Others; 
     } */
+
+	
 
 	enum Day 
 	{ 
@@ -145,17 +156,17 @@ NrgBo nrgBo;
 		@RequestMapping(value="/load",method=RequestMethod.GET)
 		public ResponseEntity<?>  load(String status)throws JSONException{
 			logger.info("load all issues");
-	        List<ProductionIssue> productionissue=new ArrayList<ProductionIssue>();
+	        List<ProductionIssueDataBean> productionissue=new ArrayList<ProductionIssueDataBean>();
 		      try{
-		      
+		    	//  productionissue = issuesinterface.getProductionIssues();
 		    	  productionissue= nrgBo.load(productionissue,status);	
-		    	  return new ResponseEntity<List<ProductionIssue>>(productionissue, HttpStatus.CREATED);
+		    	  return new ResponseEntity<List<ProductionIssueDataBean>>(productionissue, HttpStatus.CREATED);
 
 		      }
 		      catch(Exception e){
 		       e.printStackTrace();
 		      }
-		    return new ResponseEntity<List<ProductionIssue>>(productionissue, HttpStatus.CREATED);
+		    return new ResponseEntity<List<ProductionIssueDataBean>>(productionissue, HttpStatus.CREATED);
 		     }
 		
 		// ---------- Get All issue ----------------

@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.data.jpa.repository.Query;
+
 import com.mynrg.dto.MyPortalDataBean;
 import com.mynrg.dto.ProductionIssueDataBean;
 import com.mynrg.model.Bank;
@@ -25,8 +27,9 @@ public interface NrgDao {
 	
 	// Production Issues 
 	public boolean save(ProductionIssue issue);
-	public String update(ProductionIssue issue);	
-	public List<ProductionIssue> load(List<ProductionIssue> issue,String status);
+	public String update(ProductionIssue issue);
+	@Query(nativeQuery = true)
+	public List<ProductionIssueDataBean> load(List<ProductionIssueDataBean> issue,String status);
 	public ProductionIssue get(int id);
 	public String remove(int id);
 	public Map<String,Integer> reportLoad();

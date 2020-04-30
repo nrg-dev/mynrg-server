@@ -46,6 +46,9 @@ public class Portal implements Serializable {
 
 	@Column(name="PORTAL_NAME")
 	private String portalName;
+	
+	@Column(name="PORTAL_TYPE")
+	private String portaltype;
 
 	private String status;
 
@@ -193,6 +196,14 @@ public class Portal implements Serializable {
 
 	public void setNotes(String notes) {
 		this.notes = notes;
+	}
+
+	public String getPortaltype() {
+		return portaltype;
+	}
+
+	public void setPortaltype(String portaltype) {
+		this.portaltype = portaltype;
 	}
 
 }
