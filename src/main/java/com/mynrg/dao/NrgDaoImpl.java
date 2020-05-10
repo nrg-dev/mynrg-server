@@ -1,6 +1,8 @@
 package com.mynrg.dao;
 
 import java.sql.Blob;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -23,6 +25,7 @@ import com.mynrg.dto.MyPortalDataBean;
 import com.mynrg.dto.ProductionIssueDataBean;
 import com.mynrg.model.Bank;
 import com.mynrg.model.Connection;
+import com.mynrg.model.IssueComments;
 import com.mynrg.model.Portal;
 import com.mynrg.model.ProductionIssue;
 import com.mynrg.model.ServerInfo;
@@ -199,29 +202,7 @@ public class NrgDaoImpl implements NrgDao {
 		@Transactional(value = "transactionManager")
 		public boolean save(ProductionIssue issue) {
 			logger.info("Issue status-->"+issue.getIssueStatus());
-		/*
-		 * logger.info("Issue Notes-->"+issue.issueNotes);
-		 * logger.info("Clinet name-->"+issue.clientName);
-		 * logger.info("Priority-->"+issue.priority);
-		 * logger.info("Country-->"+issue.country);
-		 * logger.info("base 64-->"+issue.cardImageBase64);
-		 */
 			try {
-			
-			/*
-			 * byte byte_string[]=issue.getCardImageBase64().getBytes(); Blob blob= new
-			 * SerialBlob(byte_string);
-			 */
-			  //ProductionIssue prodissue = new ProductionIssue();
-			 
-			/*
-			 * byte[] byteData = issue.getCardImageBase64().getBytes("UTF-8");//Better to
-			 * specify encoding Blob blobData = dbConnection.createBlob();
-			 * blobData.setBytes(1, byteData);
-			 */
-				
-				
-				//ProductionIssue prodissue = new ProductionIssue();
 				Date createddate = new Date();
 				System.out.println("Before Set the blob");
 				issue.setCardImageBase64(issue.getCardImageBase64());
@@ -229,18 +210,35 @@ public class NrgDaoImpl implements NrgDao {
 				issue.setStatus("Active");
 				issue.setCreatedDate(createddate);
 				issue.setUpdatedDate(createddate);
-			/*
-			 * prodissue.setCreatedPerson(issue.getCreatedPerson());
-			 * prodissue.setClientName(issue.getClientName());
-			 * prodissue.setIssueNotes(issue.getIssueNotes());
-			 * prodissue.setPriority(issue.getPriority());
-			 * prodissue.setProduct(issue.getProduct());
-			 */
 				entitymanager.persist(issue);
 				entitymanager.flush();
 				entitymanager.clear();
-				//}
 			} catch (Exception e) {
+				return false;
+			}
+			return true;
+		
+		}
+		
+		@Override
+		@Transactional(value = "transactionManager")
+		public boolean saveComments(IssueComments comments) {
+			logger.info("Issue Id-->"+comments.getByissueId());
+			try {
+				//IssueComments data = entitymanager.find(IssueComments.class, comments.getComments().getIssueId());
+				//Date createddate = new Date();
+				//comments.setDate(createddate);
+				//data.setComments(comments);
+				//DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+				//Date date = new Date();
+				//logger.debug("Date-->"+dateFormat.format(date));
+				//comments.setDate(dateFormat.format(date));
+				//comments.setDate("yyyy/MM/dd HH:mm:ss");
+				entitymanager.persist(comments);
+				entitymanager.flush();
+				entitymanager.clear();
+			} catch (Exception e) {
+				e.printStackTrace();
 				return false;
 			}
 			return true;
@@ -278,17 +276,8 @@ public class NrgDaoImpl implements NrgDao {
 			try {
 				Query q = null;
 				if(status.equalsIgnoreCase("All")) {
-				/*
-				 * if(repo!=null) { logger.info("Not Null"); } else { logger.info("Null"); }
-				 * List<ProductionIssue> empList = repo.loadIssues();
-				 */
-
-				//	q = entitymanager.createQuery("from ProductionIssue order by updatedDate desc");
-				//	q = entitymanager.createQuery("SELECT c.issueId c.issueNotes,c.clientName,c.status,c.priority FROM ProductionIssue AS c by updatedDate desc");
-
-				
 				  TypedQuery<Object[]> query = entitymanager.createQuery(
-				  "SELECT issueId, issueNotes,clientName,status,priority FROM ProductionIssue",
+				  "SELECT issueId, issueNotes,clientName,status,priority,createdDate FROM ProductionIssue order by createdDate desc",
 				  Object[].class); 
 				  List<Object[]> results = query.getResultList();
 				  for (Object[] result : results) {
@@ -296,14 +285,13 @@ public class NrgDaoImpl implements NrgDao {
 					  productionissuedatabean.setIssueId((Integer) result[0]);
 					  productionissuedatabean.setIssueNotes((String) result[1]);
 					  productionissuedatabean.setClientName((String) result[2]);
-					  productionissuedatabean.setStatus((String) result[3]);
+					  productionissuedatabean.setIssueStatus((String) result[3]);
 					  productionissuedatabean.setPriority((String) result[4]);
+					  productionissuedatabean.setCreatedDate((Date) result[5]);				  
 					  issuelist.add(productionissuedatabean);
 				      logger.debug(
 				      "ID: " + result[0] + ", Notes: " + result[1]);
 				  }
-						
-				
 				/*
 				 * issue = (List<ProductionIssue>) entitymanager.createQuery(
 				 * "SELECT issueId, issueNotes,clientName,status,priority FROM ProductionIssue"
@@ -331,6 +319,24 @@ public class NrgDaoImpl implements NrgDao {
 			return issuelist;
 		
 		}
+		
+		public List<IssueComments> loadComments(int id) {
+			Query q = null;
+			List<IssueComments> list = null;
+			try {
+				q = entitymanager.createQuery("from IssueComments where  byissueId = '" + id + "'" + "order by date");
+				list = (List<IssueComments>) q.getResultList();
+				logger.info("Comments List Size-->"+list.size());
+				return list;
+			} catch (Exception e) {				
+				e.printStackTrace();
+				return list;
+			}
+	
+	    
+		
+		}
+
 		
 		@Override
 		@Transactional(value = "transactionManager")

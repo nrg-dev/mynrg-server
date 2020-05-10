@@ -4,6 +4,8 @@ import java.io.Serializable;
 
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import java.util.Date;
 import java.util.List;
 
@@ -66,18 +68,22 @@ public class User implements Serializable {
 
 	//bi-directional many-to-one association to CustomerDetail
 	@OneToMany(mappedBy="user")
+	@JsonIgnoreProperties
 	private List<CustomerDetail> customerDetails;
 
 	//bi-directional many-to-one association to ProductionIssue
 	@OneToMany(mappedBy="user")
+	@JsonIgnoreProperties
 	private List<ProductionIssue> productionIssues;
 
 	//bi-directional many-to-one association to Task
 	@OneToMany(mappedBy="user")
+	@JsonIgnoreProperties
 	private List<Task> tasks;
 
 	//bi-directional many-to-one association to UserRole
 	@OneToMany(mappedBy="user")
+	@JsonIgnoreProperties
 	private List<UserRole> userRoles;
 
 	public User() {

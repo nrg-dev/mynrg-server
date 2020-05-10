@@ -9,12 +9,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.mynrg.dao.NrgDao;
+import com.mynrg.dao.UserMgntDao;
 import com.mynrg.dto.ProductionIssueDataBean;
 import com.mynrg.model.Bank;
 import com.mynrg.model.Connection;
+import com.mynrg.model.IssueComments;
 import com.mynrg.model.Portal;
 import com.mynrg.model.ProductionIssue;
 import com.mynrg.model.ServerInfo;
+import com.mynrg.model.User;
 
 
 @Service("bo")
@@ -32,6 +35,7 @@ public class NrgBoImpl implements NrgBo{
 	 */
 	@Autowired
 	NrgDao dao;
+	
 	
 	
 	
@@ -66,6 +70,11 @@ public class NrgBoImpl implements NrgBo{
 		return dao.save(issue);
 	}
 	@Override
+	public boolean saveComments(IssueComments comments) {	
+		return dao.saveComments(comments);
+	}
+	
+	@Override
 	public String update(ProductionIssue issue) {
 		return dao.update(issue);
 	}
@@ -73,6 +82,12 @@ public class NrgBoImpl implements NrgBo{
 	public List<ProductionIssueDataBean> load(List<ProductionIssueDataBean> issue,String status){
 		return dao.load(issue,status);
 	}
+	@Override
+	public List<IssueComments> loadComments(int id){
+		return dao.loadComments(id);
+	}
+	
+	
 	@Override
 	public ProductionIssue get(int id) {
 		return dao.get(id);
@@ -155,5 +170,6 @@ public class NrgBoImpl implements NrgBo{
 		return dao.removeBank(id);
 	}
 	
+
 	
 }

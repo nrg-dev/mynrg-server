@@ -3,11 +3,14 @@ package com.mynrg.dto;
 
 public class LoginDataBean{
 	
+public int id;
 public String username;
 public String userpassword;
 public String usermenu;
 public String usersubmenu;
 public String usermenupages;
+public String userstatus;
+public String emailId;
 
 public String usertype;
 public String department;
@@ -31,6 +34,12 @@ public int Completed;
 
 
 
+public int getId() {
+	return id;
+}
+public void setId(int id) {
+	this.id = id;
+}
 public int getFailedcount() {
 	return Failedcount;
 }
@@ -140,6 +149,18 @@ public String getUsermenu() {
 }
 public void setUsermenu(String usermenu) {
 	this.usermenu = usermenu;
+}
+public String getUserstatus() {
+	return userstatus;
+}
+public void setUserstatus(String userstatus) {
+	this.userstatus = userstatus;
+}
+public String getEmailId() {
+	return emailId;
+}
+public void setEmailId(String emailId) {
+	this.emailId = emailId;
 }
 
 }

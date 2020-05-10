@@ -19,7 +19,7 @@ xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/x
 		<class>com.mynrg.model.Transaction</class>
 		<class>com.mynrg.model.User</class>
 		<class>com.mynrg.model.UserRole</class>
-
+		<class>com.mynrg.model.IssueComments</class>
 	
 	<exclude-unlisted-classes>true</exclude-unlisted-classes>
 	

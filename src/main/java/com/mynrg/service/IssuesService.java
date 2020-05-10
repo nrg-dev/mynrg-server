@@ -62,6 +62,7 @@ import com.google.gson.Gson;
 import com.mynrg.bo.NrgBo;
 import com.mynrg.dao.IssuesInterface;
 import com.mynrg.dto.ProductionIssueDataBean;
+import com.mynrg.model.IssueComments;
 import com.mynrg.model.ProductionIssue;
 
 @RestController
@@ -149,6 +150,29 @@ NrgBo nrgBo;
 			  return new ResponseEntity<>(HttpStatus.OK);
 		}
 		
+		// ---------------------------------------- save Comments ----------------------------------------
+		
+		
+			@PostMapping("/saveComments")
+			@CrossOrigin(origins = "http://35.160.115.237:80")
+			public ResponseEntity<?> saveComments(@RequestBody IssueComments comments)throws JSONException
+			{
+				logger.info("saveComments issues");
+				logger.debug("Issue ID-->"+comments.getByissueId());
+				logger.debug("Date-->"+comments.getDate());
+				logger.info("Comments-->"+comments.getIssueComments());
+				boolean status;//"Fail"; 
+				try{
+					comments.setDate(comments.getDate());
+					status = nrgBo.saveComments(comments);
+					logger.debug("issue reg status-->"+status);
+				}
+				catch(Exception e){
+					logger.error("Exception-->",e.getMessage());
+					  return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+				}
+				  return new ResponseEntity<>(HttpStatus.OK);
+			}
 		// ---------- Get All issue ----------------
 	
 		@Produces(MediaType.APPLICATION_JSON)
@@ -168,6 +192,25 @@ NrgBo nrgBo;
 		      }
 		    return new ResponseEntity<List<ProductionIssueDataBean>>(productionissue, HttpStatus.CREATED);
 		     }
+		
+		@Produces(MediaType.APPLICATION_JSON)
+		@CrossOrigin(origins = "http://35.160.115.237:80")
+		@RequestMapping(value="/loadComments",method=RequestMethod.GET)
+		public ResponseEntity<?>  loadComments(int id)throws JSONException{
+			logger.info("load loadComments");
+	        List<IssueComments> IssueComments=new ArrayList<IssueComments>();
+		      try{
+		    	//  productionissue = issuesinterface.getProductionIssues();
+		    	  IssueComments= nrgBo.loadComments(id);	
+		    	  return new ResponseEntity<List<IssueComments>>(IssueComments, HttpStatus.CREATED);
+
+		      }
+		      catch(Exception e){
+		       e.printStackTrace();
+		      }
+		    return new ResponseEntity<List<IssueComments>>(IssueComments, HttpStatus.CREATED);
+		     }
+		
 		
 		// ---------- Get All issue ----------------
 		

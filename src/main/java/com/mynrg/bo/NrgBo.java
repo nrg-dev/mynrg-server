@@ -11,10 +11,12 @@ import org.slf4j.LoggerFactory;
 import com.mynrg.dto.ProductionIssueDataBean;
 import com.mynrg.model.Bank;
 import com.mynrg.model.Connection;
+import com.mynrg.model.IssueComments;
 //import com.mynrg.dto.MyPortalDataBean;
 import com.mynrg.model.Portal;
 import com.mynrg.model.ProductionIssue;
 import com.mynrg.model.ServerInfo;
+import com.mynrg.model.User;
 
 
 
@@ -31,8 +33,10 @@ public interface NrgBo {
 	
 	// Production Issues 
 	public boolean save(ProductionIssue issue);
+	public boolean saveComments(IssueComments comments);	
 	public String update(ProductionIssue issue);	
 	public List<ProductionIssueDataBean> load(List<ProductionIssueDataBean> issue,String status);
+	public List<IssueComments> loadComments(int id);	
 	public ProductionIssue get(int id);
 	public String remove(int id);
 	public Map<String,Integer> reportLoad();
@@ -58,5 +62,6 @@ public interface NrgBo {
 	public Bank getBank(int id);
 	public String removeBank(int id);
 	
+
 	
 }

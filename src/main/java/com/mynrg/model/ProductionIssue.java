@@ -5,6 +5,7 @@ import java.sql.Blob;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 
 
 /**
@@ -66,6 +67,13 @@ public class ProductionIssue implements Serializable {
 	@ManyToOne
 	@JoinColumn(name="USER_ID")
 	private User user;
+	
+	/*
+	 * //bi-directional many-to-one association to CustFollowUp
+	 * 
+	 * @OneToMany(mappedBy="comments") private List<IssueComments> comments;
+	 * 
+	 */
 
 	public ProductionIssue() {
 	}
@@ -197,5 +205,11 @@ public class ProductionIssue implements Serializable {
 	public void setCardImageBase64(String cardImageBase64) {
 		this.cardImageBase64 = cardImageBase64;
 	}
+	/*
+	 * public List<IssueComments> getComments() { return comments; }
+	 * 
+	 * public void setComments(List<IssueComments> comments) { this.comments =
+	 * comments; }
+	 */
 
 }
